@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from "../api/api";
+import api from "../api";
 import { useNavigate } from 'react-router-dom';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants';
 
@@ -15,11 +15,13 @@ const Form = ({route, method}) => {
     const handleSubmit = async (e) => {
         setLoading(true);
         e.preventDefault();
+        console.log('[DEBUG] Base URL:', api.defaults.baseURL); 
         try{
-            const response = await api.post(route, {userName, password});
+            const res = await api.post(route, {userName, password});
+            console.log(res);
             if(method === 'login'){
-                localStorage.setItem(ACCESS_TOKEN, response.data.accessToken);
-                localStorage.setItem(REFRESH_TOKEN, response.data.refreshToken);
+                localStorage.setItem(ACCESS_TOKEN, res.data.access);
+                localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
                 navigate('/');
             }else{
                 navigate('/login');
@@ -35,11 +37,13 @@ const Form = ({route, method}) => {
 
     return (
         <form onSubmit={handleSubmit} className=''>
-            <input type="text" value={userName} onChange={e => setUserName(e.target.value)} placeholder='User Name'/>
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder='Enter your Password'/>
+            <h1>{name}</h1>
+            <input type="text" value={userName} onChange={(e) => setUserName(e.target.value)} placeholder='User Name'/>
+            <input type="password" value={password} onChange={(e)=> setPassword(e.target.value)} placeholder='Enter your Password'/>
             <button type='submit'>{name}</button>
         </form>
     );
 };
 
 export default Form;
+
