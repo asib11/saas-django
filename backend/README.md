@@ -15,3 +15,8 @@ source venv/bin/activate
 pip install -r requirement.txt
 ```
 
+### Run Backend
+```
+python3 manage.py runserver
+```
+
