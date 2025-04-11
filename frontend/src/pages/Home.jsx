@@ -1,6 +1,7 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import api from "../api";
+import api from '../api';
+import Note from "../components/Note";
 
 const Home = () => {
     const [notes, setNotes] = useState([]);
@@ -36,7 +37,7 @@ const Home = () => {
     const createNote = (e) => {
         e.preventDefault();
         api
-            .post("/api/notes/", { content, title })
+            .post("/api/notes/", { title, content })
             .then((res) => {
                 if (res.status === 201) alert("Note created!");
                 else alert("Failed to make note.");
@@ -49,7 +50,9 @@ const Home = () => {
         <div>
             <div>
                 <h2>Notes</h2>
-                
+                {notes.map((note) => (
+                    <Note note={note} onDelete={deleteNote} key={note.id} />
+                ))}
             </div>
             <h2>Create a Note</h2>
             <form onSubmit={createNote}>

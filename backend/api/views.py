@@ -4,11 +4,11 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
 from .models import Note
-from .serializers import UserSerializer
+from .serializers import NoteSerializer, UserSerializer
 
 
 class NoteListView(generics.ListCreateAPIView):
-    serializer_class = UserSerializer
+    serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]  # Only authenticated users can access this view
 
     def get_queryset(self):
@@ -22,7 +22,7 @@ class NoteListView(generics.ListCreateAPIView):
             print(serializer.errors)
 
 class NoteDelete(generics.DestroyAPIView):
-    serializer_class = UserSerializer
+    serializer_class = NoteSerializer
     permission_classes = [IsAuthenticated]  # Only authenticated users can access this view
 
     def get_queryset(self):

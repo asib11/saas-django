@@ -5,6 +5,7 @@ import Register from "../pages/Register";
 import Login from "../pages/Login";
 import NotFound from "../pages/NotFound";
 
+// eslint-disable-next-line react-refresh/only-export-components
 const Logout = () => {
     localStorage.clear();
     return <Navigate to="/login" />;
@@ -28,6 +29,10 @@ const router = createBrowserRouter([
     {
         path: "/register",
         element: <RegisterAndLogin/>,
+    },
+    {
+        path: "/logout",
+        element: <Logout/>,
     },
     {
         path:'*',
