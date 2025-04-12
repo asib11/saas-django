@@ -1,6 +1,6 @@
 import { useState } from "react";
 import api from "../api";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 import LoadingIndigator from "./LoadingIndigator";
 
@@ -66,6 +66,23 @@ const Form = ({ route, method }) => {
         >
           {name}
         </button>
+        <div className="text-center mt-4 text-sm text-gray-600">
+          {method === "login" ? (
+            <p>
+              Don&apos;t have an account?{" "}
+              <Link to="/register" className="text-blue-600 hover:underline">
+                Register
+              </Link>
+            </p>
+          ) : (
+            <p>
+              Already have an account?{" "}
+              <Link to="/login" className="text-blue-600 hover:underline">
+                Login
+              </Link>
+            </p>
+          )}
+        </div>
       </form>
     </div>
   );

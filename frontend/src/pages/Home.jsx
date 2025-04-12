@@ -1,15 +1,32 @@
 import React, { useEffect, useState } from "react";
 import api from "../api";
 import Note from "../components/Note";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [notes, setNotes] = useState([]);
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
+  const [username, setUsername] = useState("");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getNotes();
+    getUser();
   }, []);
+
+  const getUser = () => {
+    api
+      .get("/api/notes") // 👈 adjust if your route is different
+      .then((res) => setUsername(res.data.username))
+      .catch((err) => console.error(err));
+  };
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
 
   const getNotes = () => {
     api
@@ -48,8 +65,30 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-5xl mx-auto px-4">
+    <div className="min-h-screen bg-gray-50 py-8 relative">
+      <div className="absolute top-4 right-8">
+        <div className="relative inline-block text-left">
+          <button
+            onClick={() => setShowDropdown(!showDropdown)}
+            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition"
+          >
+            {username || "User"}
+          </button>
+
+          {showDropdown && (
+            <div className="absolute right-0 mt-2 w-40 bg-white rounded-lg shadow-md z-10">
+              <button
+                onClick={handleLogout}
+                className="w-full text-left px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition"
+              >
+                Logout
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="max-w-5xl mx-auto px-4 pt-12">
         <h2 className="text-4xl font-bold mb-8 text-center text-gray-800 relative">
           My Notes
           <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1/3 h-1 bg-blue-500"></span>
